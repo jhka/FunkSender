@@ -1,2 +1,2 @@
 # TempSender
-  Simple, low power temperature sender with nRF24L01
+  Einfacher, low power Temperatursender auf Basis atTiny84, nRF24L01 und DS16B20
