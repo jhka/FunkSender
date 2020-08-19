@@ -1,6 +1,7 @@
 /*
  * FunkSender
  * 
+ * V1.0, 19.08.2020
  * 
  * Kondensatoren:
  *                           x-----(opt. 220 uF -------x
