@@ -1,5 +1,5 @@
 /*
- * FunkEmpfänger
+ * FunkEmpfängerSimpel
  * 
  * V1.0, 19.08.2020
  *  
