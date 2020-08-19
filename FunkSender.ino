@@ -38,8 +38,8 @@
 // Definierte PINS
 #define LEDPIN        2
 #define ONE_WIRE_BUS  10 
-#define CE_PIN        3
-#define CSN_PIN       7
+#define CE_PIN        7
+#define CSN_PIN       3
 
 // Temperatur-Parameter
 OneWire oneWire(ONE_WIRE_BUS);  // OneWire Bus
