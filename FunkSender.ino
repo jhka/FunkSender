@@ -1,7 +1,6 @@
 /*
  * FunkSender
  * 
- * V1.0, 19.08.2020
  * 
  * Kondensatoren:
  *                           x-----(opt. 220 uF -------x
@@ -12,10 +11,12 @@
  *  DS18B20 Mittlerer Pin-- PB0 (10)  2|  T  |13      AREF
  *                          PB1 ( 9)  3|  t  |12 ( 1) PA1
  *                          PB3 (  )  4|  i  |11 ( 2) PA2 --- LED (220 Ohm)
- *                          PB2 ( 8)  5|  n  |10 ( 3) PA3 --- nRF24L01 CSN, pin4 
- *  nRF24L01 CE, pin3       PA7 ( 7)  6|  y  |9  ( 4) PA4 --- nRF24L01 SCK, pin5
+ *                          PB2 ( 8)  5|  n  |10 ( 3) PA3 --- nRF24L01 CE, pin4 
+ *  nRF24L01 CSN, pin3      PA7 ( 7)  6|  y  |9  ( 4) PA4 --- nRF24L01 SCK, pin5
  *  nRF24L01 MISO, pin7 --- PA6 ( 6)  7|_____|8  ( 5) PA5 --- nRF24L01 MOSI, pin6
  *  
+ *                                ^                ^
+ *                                |  Arduino Pin#  |
  */
 
 
@@ -38,8 +39,8 @@
 // Definierte PINS
 #define LEDPIN        2
 #define ONE_WIRE_BUS  10 
-#define CE_PIN        7
-#define CSN_PIN       3
+#define CE_PIN        3
+#define CSN_PIN       7
 
 // Temperatur-Parameter
 OneWire oneWire(ONE_WIRE_BUS);  // OneWire Bus
@@ -183,7 +184,6 @@ void loop()
 
     // Deaktiviere Radio nach dem Senden zum Stromsparen
     radio.powerDown();    
-    digitalWrite(CSN_PIN,LOW);
   } 
 
   // Wenn Zeit für nächste Temperaturabfrage gekommen ist, dann durchführen
