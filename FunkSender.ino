@@ -83,7 +83,7 @@ void enter_sleep(void) {
   
   byte adcsra_save = ADCSRA; // ADC-Status speichern
 
-  ADCSRA &= ~_BV(ADEN);  // Deaktiviere A-D-Wander (spart ca. 300 mA) 
+  ADCSRA &= ~_BV(ADEN);  // Deaktiviere A-D-Wander (spart ca. 300 uA) 
   set_sleep_mode(SLEEP_MODE_PWR_DOWN); // Power Down Mode   
   power_all_disable(); // Deaktiviert Peripherie
   sleep_mode(); // Starte Sleep-Modus
