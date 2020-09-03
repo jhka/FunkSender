@@ -45,7 +45,6 @@
 // Temperatur-Parameter
 OneWire oneWire(ONE_WIRE_BUS);  // OneWire Bus
 DallasTemperature sensors(&oneWire); // Sensor auf OneWire-Bus
-DeviceAddress tempDeviceAddress;  // Adresse desSensors
     // Auflösung, max. Zeit für Temp-Conversion
     // 9 bit   10 bit   11 bit    12 bit
     // 0.5°C,  0.25°C,  0.125°C,  0.0625°C
@@ -107,7 +106,7 @@ void setup()
 
   // Initialisiere den Sensor
   sensors.begin();
-  sensors.setResolution(tempDeviceAddress, res);
+  sensors.setResolution(res);
   sensors.setWaitForConversion(false); 
 
   // Setup des Watchdog Timers 
