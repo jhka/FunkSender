@@ -1,8 +1,8 @@
 /*
- * FunkEmpfängerSimpel
+ * FunkEmpfänger
  * 
- * V1.0, 19.08.2020
- *  
+ * V2.0, 21.02.2021 
+ *   
  */
  
  // Achtung - neueste RF24 Library von TMRh20 verwenden
@@ -14,7 +14,7 @@
 // Beinhaltet die Messwerte in byte
 // // Sensor-Wert-ID: 1: Temperatur, 2: Luftfeuchtigkeit, 3: Bodenfeuchtigkeit, 4: Öffnungsschalter, 5: Spannung, ...
 // [0] ID, [1] Sensor-Wert-ID, [2] Wert-Ganzzahl, [3] Wert-Nachkomma
-uint8_t myDataArr[4];
+int8_t myDataArr[4];
 
 // nRF24-Radio-Objekt definieren
 RF24 radio(CE_PIN, CSN_PIN);
@@ -34,20 +34,24 @@ void setup() {
   if (radio.begin()){
     radioInit = true;
     Serial.println("erfolgreich");
+    radio.setDataRate(RF24_1MBPS); // langsamere Übertragung (RF24_250kbps) = weniger Stromverbrauch & größere Reichweite aber nicht Kompatibel mit RF24L01 (ohne '+')
+    radio.setPayloadSize(sizeof(myDataArr));
+    radio.setChannel(101);  // Kanal, auf dem gesendet wird (zwischen 1 und 125), untere Kanäle oft von WIFI belegt
+    radio.setAutoAck(true); // Automatische Bestätigung bei Empfang Daten
+    radio.setPALevel(RF24_PA_MAX);  // bei geringen Entfernungen reicht eine schwache Sendeintensität ansonsten RF24_PA_MAX oder RF24_PA_HIGH
+  
+    // Öffne die Pipes zum Senden und Empfangen
+    // Achtung, anders als beim Sender!
+    radio.openWritingPipe(addresses[0]); // hier wird gesendet
+    radio.openReadingPipe(1,addresses[1]); // hier wird empfangen
+   
+    // Starte den Empfang
+    radio.startListening();
   }
   else {
     Serial.println("nicht erfolgreich");
   }
-  
-  radio.setDataRate( RF24_250KBPS );
 
-  // Öffne die Pipes zum Senden und Empfangen
-  // Achtung, anders als beim Sender!
-  radio.openWritingPipe(addresses[0]); // hier wird gesendet
-  radio.openReadingPipe(1,addresses[1]); // hier wird empfangen
- 
-  // Starte den Empfang
-  radio.startListening();
 }
 
 void loop() {
@@ -61,9 +65,16 @@ void loop() {
     Serial.print("(WertID: ");
     Serial.print(myDataArr[1]);    
     Serial.print(") Wert: ");
-    Serial.print(myDataArr[2]);    
-    Serial.print(",");
-    Serial.println(myDataArr[3]);
+
+    // Wenn Nachkommastelle = "-1", dann hat der Sender einen Fehler gesendet
+    if (myDataArr[3] == -1) {
+      Serial.println("Fehler im Temp.-Sender");
+    }
+    else {
+      Serial.print(myDataArr[2]);    
+      Serial.print(",");
+      Serial.println(myDataArr[3]);      
+    }
   }
   delay(10);
 }
